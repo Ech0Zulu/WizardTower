@@ -1,9 +1,13 @@
-﻿using UnityEngine;
+﻿using Cinemachine;
+using UnityEngine;
 
 // MoveBehaviour inherits from GenericBehaviour. This class corresponds to basic walk and run behaviour, it is the default behaviour.
 public class MoveBehaviour : GenericBehaviour
 {
-	public float walkSpeed = 0.15f;                 // Default walk speed.
+	[SerializeField]
+	public CinemachineFreeLook freeLookCamera;
+
+    public float walkSpeed = 0.15f;                 // Default walk speed.
 	public float runSpeed = 1.0f;                   // Default run speed.
 	public float sprintSpeed = 2.0f;                // Default sprint speed.
 	public float speedDampTime = 0.1f;              // Default damp time to change the animations based on current speed.
@@ -139,11 +143,14 @@ public class MoveBehaviour : GenericBehaviour
 	// Rotate the player to match correct orientation, according to camera and key pressed.
 	Vector3 Rotating(float horizontal, float vertical)
 	{
-		// Get camera forward direction, without vertical component.
-		Vector3 forward = behaviourManager.playerCamera.TransformDirection(Vector3.forward);
+        // Get camera forward direction, without vertical component.
+        Vector3 forward = freeLookCamera.LookAt.position - freeLookCamera.transform.position;
+        forward.y = 0.0f;
+        forward = forward.normalized;
 
-		// Player is moving on ground, Y component of camera facing is not relevant.
-		forward.y = 0.0f;
+
+        // Player is moving on ground, Y component of camera facing is not relevant.
+        forward.y = 0.0f;
 		forward = forward.normalized;
 
 		// Calculate target direction based on camera forward and direction key.

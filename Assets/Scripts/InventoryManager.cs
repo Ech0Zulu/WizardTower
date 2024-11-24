@@ -12,11 +12,7 @@ public class InventoryManager : MonoBehaviour
         CrystalCount = 0;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public int GetCrystalCount() {return CrystalCount;}
 
     public void Add()
     {
